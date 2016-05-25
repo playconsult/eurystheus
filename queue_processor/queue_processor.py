@@ -8,21 +8,30 @@ import boto3
 
 class QueueProcessor:
     """
-
+    Base class which should be subclassed to create your own queue
     """
     queue_name = environ.get('QUEUE_NAME', None)
     _tasks = dict()
 
-    def get_task(self, name):
+    def _get_task(self, name):
         return self._tasks.get(name)
 
     def process(self, message):
-        task = self.get_task(message.get('task'))
+        """
+        Process a message and invoke the task requested using the specified parameters.
+        :param message:
+        :return:
+        """
+        task = self._get_task(message.get('task'))
         if task is not None:
             task(self, *message.get('parameters', []))
 
     @asyncio.coroutine
     def poll(self):
+        """
+        Poll the SQS queue for messages. For each, process the task requested.
+        :return:
+        """
         for message in self.queue.receive_messages():
             message_body = json.loads(message.body)
             self.process(message_body)
@@ -57,6 +66,11 @@ class QueueProcessor:
 
     @classmethod
     def task(cls, name):
+        """
+        Decorator to designate the available tasks in your worker.
+        :param name:
+        :return:
+        """
         def decorator(func):
             cls._tasks[name] = func
             return func

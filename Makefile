@@ -11,6 +11,7 @@ MAKE=make
 
 SPHINX_DIR=docs/
 SPHINX_BUILDDIR="${SPHINX_DIR}/_build"
+SPHINX_GENDIR="${SPHINX_DIR}/_gen"
 SPHINX_HTMLDIR="${SPHINX_BUILDDIR}/html"
 DOCUMENTATION=Documentation
 FLAKEPLUSTARGET=3.4
@@ -20,16 +21,18 @@ clean: clean-docs clean-pyc clean-build
 clean-dist: clean clean-git-force
 
 doc-gen:
-	$(SPHINX_APIDOC) -o "$(SPHINX_DIR)" "$(PROJ)"
+	$(SPHINX_APIDOC) -f -o "$(SPHINX_GENDIR)" "$(PROJ)"
 
 Documentation:
 	(cd "$(SPHINX_DIR)"; $(MAKE) html)
 	mv "$(SPHINX_HTMLDIR)" $(DOCUMENTATION)
 
-docs: Documentation
+docs: clean-docs Documentation
 
 clean-docs:
 	-rm -rf "$(SPHINX_BUILDDIR)"
+	-rm -rf "$(SPHINX_GENDIR)"
+	-rm -rf "$(DOCUMENTATION)"
 
 lint: flakecheck apicheck configcheck readmecheck
 

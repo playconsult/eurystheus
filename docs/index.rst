@@ -11,6 +11,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+.. autoclass:: queue_processor.Q
+   :members:
+   :inherited-members:
+
 
 
 Indices and tables
