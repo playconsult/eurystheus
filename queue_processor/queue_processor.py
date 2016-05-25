@@ -1,10 +1,13 @@
 import asyncio
 import json
+from os import environ
+from sys import stderr
 
 import boto3
 
+
 class QueueProcessor:
-    queue_name = ''
+    queue_name = environ.get('QUEUE_NAME', None)
     _tasks = dict()
 
     def get_task(self, name):
@@ -30,6 +33,9 @@ class QueueProcessor:
             yield from asyncio.wait([self.poll()])
 
     def __init__(self):
+        if self.queue_name is None:
+            print('QUEUE_NAME environment variable is not set.', file=stderr)
+            exit(1)
         # Get the service resource
         sqs = boto3.resource('sqs')
         # Get the queue. This returns an SQS.Queue instance
