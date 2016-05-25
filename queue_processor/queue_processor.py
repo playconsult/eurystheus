@@ -7,6 +7,9 @@ import boto3
 
 
 class QueueProcessor:
+    """
+
+    """
     queue_name = environ.get('QUEUE_NAME', None)
     _tasks = dict()
 
