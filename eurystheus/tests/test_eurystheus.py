@@ -7,7 +7,7 @@ from mock import patch
 from mock import MagicMock
 from nose import with_setup
 from faker import Factory
-from queue_processor import QueueProcessor
+from eurystheus import QueueProcessor
 import logging
 
 from faker.providers import BaseProvider
@@ -27,7 +27,7 @@ fake.add_provider(MockProvider)
 
 def setup_func():
     os.environ['QUEUE_NAME'] = fake.pystr()
-    logging.getLogger('queue_processor').setLevel(logging.DEBUG)
+    logging.getLogger('eurystheus').setLevel(logging.DEBUG)
 
 def teardown_func():
     "tear down test fixtures"
@@ -46,8 +46,8 @@ def test_task_decorator_registers_task():
     assert_equal(QueueProcessor._tasks[mock_task_name], mock_task)
 
 @with_setup(setup_func, teardown_func)
-@patch('queue_processor.queue_processor.boto3.resource')
-@patch('queue_processor.queue_processor.asyncio.get_event_loop')
+@patch('eurystheus.eurystheus.boto3.resource')
+@patch('eurystheus.eurystheus.asyncio.get_event_loop')
 def test_get_task_returns_task(mock_loop, mock_resource):
     "test ..."
     # Arrange
@@ -64,9 +64,9 @@ def test_get_task_returns_task(mock_loop, mock_resource):
 
 
 @with_setup(setup_func, teardown_func)
-@patch('queue_processor.QueueProcessor._get_task')
-@patch('queue_processor.queue_processor.boto3.resource')
-@patch('queue_processor.queue_processor.asyncio.get_event_loop')
+@patch('eurystheus.QueueProcessor._get_task')
+@patch('eurystheus.eurystheus.boto3.resource')
+@patch('eurystheus.eurystheus.asyncio.get_event_loop')
 def test_check_environment_raises(mock_loop, mock_resource, mock_get_task):
     "test ..."
     # Arrange
@@ -79,9 +79,9 @@ def test_check_environment_raises(mock_loop, mock_resource, mock_get_task):
 
 
 @with_setup(setup_func, teardown_func)
-@patch('queue_processor.QueueProcessor._get_task')
-@patch('queue_processor.queue_processor.boto3.resource')
-@patch('queue_processor.queue_processor.asyncio.get_event_loop')
+@patch('eurystheus.QueueProcessor._get_task')
+@patch('eurystheus.eurystheus.boto3.resource')
+@patch('eurystheus.eurystheus.asyncio.get_event_loop')
 def test_process_invokes_function(mock_loop, mock_resource, mock_get_task):
     "test ..."
     # Arrange
@@ -106,10 +106,10 @@ def test_process_invokes_function(mock_loop, mock_resource, mock_get_task):
 
 
 @with_setup(setup_func, teardown_func)
-@patch('queue_processor.QueueProcessor._get_task')
-@patch('queue_processor.QueueProcessor.log')
-@patch('queue_processor.queue_processor.boto3.resource')
-@patch('queue_processor.queue_processor.asyncio.get_event_loop')
+@patch('eurystheus.QueueProcessor._get_task')
+@patch('eurystheus.QueueProcessor.log')
+@patch('eurystheus.eurystheus.boto3.resource')
+@patch('eurystheus.eurystheus.asyncio.get_event_loop')
 def test_process_function_logs_error(mock_loop, mock_resource, mock_log, mock_get_task):
     "test ..."
     # Arrange
@@ -137,8 +137,8 @@ def test_process_function_logs_error(mock_loop, mock_resource, mock_log, mock_ge
     mock_task.assert_called_once_with(Q, *fake_params)
 
 @with_setup(setup_func, teardown_func)
-@patch('queue_processor.queue_processor.boto3.resource')
-@patch('queue_processor.queue_processor.asyncio.get_event_loop')
+@patch('eurystheus.eurystheus.boto3.resource')
+@patch('eurystheus.eurystheus.asyncio.get_event_loop')
 def test_poll_polls_sqs_no_messages_does_nothing(mock_loop, mock_resource):
     "test ..."
     # Arrange
@@ -157,8 +157,8 @@ def test_poll_polls_sqs_no_messages_does_nothing(mock_loop, mock_resource):
     mock_queue.receive_messages.assert_called()
 
 @with_setup(setup_func, teardown_func)
-@patch('queue_processor.queue_processor.boto3.resource')
-@patch('queue_processor.queue_processor.asyncio.get_event_loop')
+@patch('eurystheus.eurystheus.boto3.resource')
+@patch('eurystheus.eurystheus.asyncio.get_event_loop')
 def test_poll_polls_sqs_messages_deletes_messages(mock_loop, mock_resource):
     "test ..."
     # Arrange
