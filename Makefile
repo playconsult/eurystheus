@@ -68,7 +68,7 @@ test-all: clean-pyc
 	$(TOX)
 
 test:
-	mkdir -f reports
+	mkdir -p reports
 	$(PYTHON) setup.py nosetests
 
 build:

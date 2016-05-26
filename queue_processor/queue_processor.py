@@ -84,15 +84,15 @@ class QueueProcessor:
         sqs = boto3.resource('sqs')
         # Get the queue. This returns an SQS.Queue instance
         self.queue = sqs.get_queue_by_name(QueueName=self.queue_name)
-        loop = asyncio.get_event_loop()
+        self.loop = asyncio.get_event_loop()
         try:
-            loop.create_task(self.loop_executer(loop))
+            self.loop.create_task(self.loop_executer(self.loop))
             if run:
-                loop.run_forever()
+                self.loop.run_forever()
         except KeyboardInterrupt:
             pass
         finally:
-            loop.close()
+            self.loop.close()
             self.log.debug('{{Queue {0}}} Stopped polling queue.'.format(self.queue_name))
 
     @classmethod
