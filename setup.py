@@ -102,7 +102,7 @@ setup(
     author_email=meta['contact'],
     url=meta['homepage'],
     platforms=['any'],
-    packages=['queue_processor'],
+    packages=['eurystheus'],
     scripts=[],
     license='BSD',
     long_description=long_description,
