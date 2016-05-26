@@ -30,8 +30,8 @@ docs: clean-docs Documentation
 
 docs-package:
 	mkdir -p dist
-	zip -r docs.zip $(DOCUMENTATION)/*
-	mv docs.zip "dist/"
+	(cd "$(DOCUMENTATION)"; zip -r docs.zip *; mv docs.zip "../dist/")
+
 
 docs-dist: docs docs-package
 
