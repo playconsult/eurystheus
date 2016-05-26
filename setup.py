@@ -45,7 +45,7 @@ else:
 
 classes = """
     Development Status :: 4 - Beta
-    License :: OSI Approved :: BSD License
+    License :: OSI Approved :: MIT License
     Topic :: System :: Distributed Computing
     Topic :: Software Development :: Object Brokering
     Programming Language :: Python
