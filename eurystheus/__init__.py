@@ -25,7 +25,7 @@ __docformat__ = 'restructuredtext'
 
 VERSION_BANNER = '{0} ({1})'.format(__version__, SERIES)
 
-from .queue_processor import QueueProcessor
+from .eurystheus import QueueProcessor
 
 class Q(QueueProcessor):
     pass

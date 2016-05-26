@@ -29,7 +29,7 @@ class QueueProcessor:
     """
     queue_name = None
     _tasks = dict()
-    log = logging.getLogger('queue_processor')
+    log = logging.getLogger('eurystheus')
 
     def _get_task(self, name):
         return self._tasks.get(name)

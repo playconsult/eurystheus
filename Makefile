@@ -1,4 +1,4 @@
-PROJ=queue_processor
+PROJ=eurystheus
 PYTHON=python
 GIT=git
 TOX=tox

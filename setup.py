@@ -2,7 +2,7 @@ import codecs
 import os
 from setuptools import setup
 
-NAME = 'QueueProcessor'
+NAME = 'eurystheus'
 
 # -*- Installation Requires -*-
 import re
@@ -39,7 +39,7 @@ test_requires = reqs('test.txt')
 if os.path.exists('README.rst'):
     long_description = codecs.open('README.rst', 'r', 'utf-8').read()
 else:
-    long_description = 'See http://pypi.python.org/pypi/queue_processor'
+    long_description = 'See http://pypi.python.org/pypi/eurystheus'
 
 # -*- Classifiers -*-
 

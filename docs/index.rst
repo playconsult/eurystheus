@@ -1,8 +1,8 @@
-QueueProcessor
-==============
+Eurystheus - Task Queue Processor
+=================================
 
 
-.. autoclass:: queue_processor.QueueProcessor
+.. autoclass:: eurystheus.QueueProcessor
    :members:
    :inherited-members:
 
