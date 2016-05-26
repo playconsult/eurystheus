@@ -31,6 +31,7 @@ def reqs(*f):
     return [req for subreq in _reqs(*f) for req in subreq]
 
 install_requires = reqs('default.txt')
+test_requires = reqs('test.txt')
 
 
 # -*- Long Description -*-
@@ -106,5 +107,6 @@ setup(
     license='BSD',
     long_description=long_description,
     install_requires=install_requires,
+    tests_require=test_requires,
     classifiers=classifiers,
 )

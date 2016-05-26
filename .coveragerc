@@ -1,0 +1,8 @@
+[run]
+omit = tests/*, .env/*, database/*
+
+[html]
+directory = ./reports/htmlcoverage
+
+[xml]
+output = ./reports/coverage.xml

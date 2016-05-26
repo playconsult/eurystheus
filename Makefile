@@ -57,7 +57,7 @@ clean-pyc:
 removepyc: clean-pyc
 
 clean-build:
-	rm -rf build/ dist/ .eggs/ *.egg-info/ .tox/ .coverage cover/
+	rm -rf build/ dist/ .eggs/ *.egg-info/ .tox/ .coverage reports/
 
 clean-git:
 	$(GIT) clean -xdn -e .env -e .pycharmrc
