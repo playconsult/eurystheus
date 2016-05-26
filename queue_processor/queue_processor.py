@@ -2,6 +2,7 @@ import asyncio
 import json
 from os import environ
 from sys import stderr
+import logging
 
 import boto3
 
@@ -12,6 +13,7 @@ class QueueProcessor:
     """
     queue_name = None
     _tasks = dict()
+    log = logging.getLogger('queue_processor')
 
     def _get_task(self, name):
         return self._tasks.get(name)
@@ -22,9 +24,13 @@ class QueueProcessor:
         :param message:
         :return:
         """
-        task = self._get_task(message.get('task'))
+        task_name = message.get('task')
+        task = self._get_task(task_name)
         if task is not None:
-            task(self, *message.get('parameters', []))
+            try:
+                task(self, *message.get('parameters', []))
+            except Exception:
+                self.log.exception('{{Queue {0}}} Error running task {0}'.format(self.queue_name, task_name))
 
     @asyncio.coroutine
     def poll(self):
@@ -32,9 +38,12 @@ class QueueProcessor:
         Poll the SQS queue for messages. For each, process the task requested.
         :return:
         """
+        self.log.debug('{{Queue {0}}} Checking for messages'.format(self.queue_name))
         for message in self.queue.receive_messages():
+            self.log.debug('{{Queue {0}}} Processing message: {1}'.format(self.queue_name, message.body))
             message_body = json.loads(message.body)
             self.process(message_body)
+            self.log.debug('{{Queue {0}}} Completed processing message: {1}'.format(self.queue_name, message.body))
             message.delete()
         yield from asyncio.sleep(1)
 
@@ -50,22 +59,22 @@ class QueueProcessor:
             if self.queue_name is None:
                 print('QUEUE_NAME environment variable is not set.', file=stderr)
                 exit(1)
+
+        self.log.debug('{{Queue {0}}} Started polling queue.'.format(self.queue_name))
         # Get the service resource
         sqs = boto3.resource('sqs')
         # Get the queue. This returns an SQS.Queue instance
         self.queue = sqs.get_queue_by_name(QueueName=self.queue_name)
-        print('step: asyncio.get_event_loop()')
         loop = asyncio.get_event_loop()
         try:
-            print('step: loop.run_until_complete()')
             loop.create_task(self.loop_executer(loop))
             if run:
                 loop.run_forever()
         except KeyboardInterrupt:
             pass
         finally:
-            print('step: loop.close()')
             loop.close()
+            self.log.debug('{{Queue {0}}} Stopped polling queue.'.format(self.queue_name))
 
     @classmethod
     def task(cls, name):
