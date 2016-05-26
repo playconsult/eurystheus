@@ -104,7 +104,7 @@ setup(
     platforms=['any'],
     packages=['eurystheus'],
     scripts=[],
-    license='BSD',
+    license='MIT',
     long_description=long_description,
     install_requires=install_requires,
     tests_require=test_requires,
