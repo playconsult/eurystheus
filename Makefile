@@ -28,10 +28,18 @@ Documentation:
 
 docs: clean-docs Documentation
 
+docs-package:
+	mkdir -p dist
+	zip -r docs.zip $(DOCUMENTATION)/*
+	mv docs.zip "dist/"
+
+docs-dist: docs docs-package
+
 clean-docs:
 	-rm -rf "$(SPHINX_BUILDDIR)"
 	-rm -rf "$(SPHINX_GENDIR)"
 	-rm -rf "$(DOCUMENTATION)"
+	-rm -rf docs.zip
 
 lint: flakecheck
 
@@ -76,4 +84,4 @@ build:
 
 distcheck: lint test clean
 
-dist: clean-dist build
+dist: clean-dist build docs-dist
