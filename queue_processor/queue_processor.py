@@ -10,7 +10,7 @@ class QueueProcessor:
     """
     Base class which should be subclassed to create your own queue
     """
-    queue_name = environ.get('QUEUE_NAME', None)
+    queue_name = None
     _tasks = dict()
 
     def _get_task(self, name):
@@ -44,10 +44,12 @@ class QueueProcessor:
         while loop.is_running():
             yield from asyncio.wait([self.poll()])
 
-    def __init__(self):
+    def __init__(self, run=True):
         if self.queue_name is None:
-            print('QUEUE_NAME environment variable is not set.', file=stderr)
-            exit(1)
+            self.queue_name = environ.get('QUEUE_NAME', None)
+            if self.queue_name is None:
+                print('QUEUE_NAME environment variable is not set.', file=stderr)
+                exit(1)
         # Get the service resource
         sqs = boto3.resource('sqs')
         # Get the queue. This returns an SQS.Queue instance
@@ -57,7 +59,8 @@ class QueueProcessor:
         try:
             print('step: loop.run_until_complete()')
             loop.create_task(self.loop_executer(loop))
-            loop.run_forever()
+            if run:
+                loop.run_forever()
         except KeyboardInterrupt:
             pass
         finally:

@@ -60,10 +60,10 @@ clean-build:
 	rm -rf build/ dist/ .eggs/ *.egg-info/ .tox/ .coverage cover/
 
 clean-git:
-	$(GIT) clean -xdn -e .env
+	$(GIT) clean -xdn -e .env -e .pycharmrc
 
 clean-git-force:
-	$(GIT) clean -xdf -e .env
+	$(GIT) clean -xdf -e .env -e .pycharmrc
 
 test-all: clean-pyc
 	$(TOX)
