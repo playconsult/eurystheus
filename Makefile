@@ -2,7 +2,6 @@ PROJ=queue_processor
 PYTHON=python
 GIT=git
 TOX=tox
-NOSETESTS=nosetests
 ICONV=iconv
 FLAKE8=flake8
 FLAKEPLUS=flakeplus
@@ -34,7 +33,7 @@ clean-docs:
 	-rm -rf "$(SPHINX_GENDIR)"
 	-rm -rf "$(DOCUMENTATION)"
 
-lint: flakecheck apicheck configcheck readmecheck
+lint: flakecheck
 
 flakecheck:
 	$(FLAKE8) "$(PROJ)"
@@ -69,10 +68,7 @@ test-all: clean-pyc
 	$(TOX)
 
 test:
-	$(PYTHON) setup.py test
-
-cov:
-	$(NOSETESTS) -xv --with-coverage --cover-html --cover-branch
+	$(PYTHON) setup.py nosetests
 
 build:
 	$(PYTHON) setup.py sdist bdist_wheel

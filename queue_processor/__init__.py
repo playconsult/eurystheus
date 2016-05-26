@@ -3,6 +3,7 @@
 # :copyright: (c) 2016 Play Consulting Ltd..  All rights reserved.
 #                 All rights reserved.
 # :license:   BSD (3 Clause), see LICENSE for more details.
+# flake8: noqa
 
 from collections import namedtuple
 
