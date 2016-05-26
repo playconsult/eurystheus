@@ -49,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'QueueProcessor'
-copyright = '2016, Alastair McFarlane'
+copyright = '2016, Play Consulting Ltd.'
 author = 'Alastair McFarlane'
 
 # The version info for the project you're documenting, acts as replacement for

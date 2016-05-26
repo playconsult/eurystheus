@@ -9,7 +9,23 @@ import boto3
 
 class QueueProcessor:
     """
-    Base class which should be subclassed to create your own queue
+    Base class which should be subclassed to create your own queue.
+
+    Create a subclass of `QueueProcessor`, and instantiate it to run
+
+    Example usage::
+
+        from queue_processor import Q
+
+        class ExampleQueue(Q):
+
+            queue_name = 'queue-name'
+
+            @Q.task('test_task')
+            def test_task(self, *args):
+                print ('running ' + ','.join(args))
+
+        queue = ExampleQueue()
     """
     queue_name = None
     _tasks = dict()
@@ -19,10 +35,10 @@ class QueueProcessor:
         return self._tasks.get(name)
 
     def process(self, message):
-        """
-        Process a message and invoke the task requested using the specified parameters.
-        :param message:
-        :return:
+        """Process a message and invoke the task requested using the specified parameters.
+
+        :param message: Message in the format ``{'task': <task_name>, 'parameters': [<param_1>, <param_2>, ...]}``
+        :type message: dict
         """
         task_name = message.get('task')
         task = self._get_task(task_name)
@@ -36,7 +52,6 @@ class QueueProcessor:
     def poll(self):
         """
         Poll the SQS queue for messages. For each, process the task requested.
-        :return:
         """
         self.log.debug('{{Queue {0}}} Checking for messages'.format(self.queue_name))
         for message in self.queue.receive_messages():
@@ -49,11 +64,15 @@ class QueueProcessor:
 
     @asyncio.coroutine
     def loop_executer(self, loop):
-        # you could use even while True here
         while loop.is_running():
             yield from asyncio.wait([self.poll()])
 
     def __init__(self, run=True):
+        """ Constructor - connects to SQS and begins main event loop
+
+        :param run: (optional) Disable starting the main loop if set to False.
+        :type run: bool
+        """
         if self.queue_name is None:
             self.queue_name = environ.get('QUEUE_NAME', None)
             if self.queue_name is None:
@@ -78,10 +97,11 @@ class QueueProcessor:
 
     @classmethod
     def task(cls, name):
-        """
-        Decorator to designate the available tasks in your worker.
-        :param name:
-        :return:
+        """Decorator to designate the available tasks in your worker.
+
+        :param name: The name of the task, which can be invoked by messages
+        :type name: str
+
         """
         def decorator(func):
             cls._tasks[name] = func
