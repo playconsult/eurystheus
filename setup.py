@@ -44,7 +44,7 @@ else:
 # -*- Classifiers -*-
 
 classes = """
-    Development Status :: 5 - Production/Stable
+    Development Status :: 4 - Beta
     License :: OSI Approved :: BSD License
     Topic :: System :: Distributed Computing
     Topic :: Software Development :: Object Brokering
