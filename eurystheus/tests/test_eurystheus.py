@@ -87,11 +87,11 @@ def test_process_invokes_function(mock_loop, mock_resource, mock_get_task):
     # Arrange
     Q = QueueProcessor(run=False)
 
-    fask_task_name = fake.pystr()
+    fake_task_name = fake.pystr()
     fake_params = fake.pylist()
 
     fake_message = {
-        'task': fask_task_name,
+        'task': fake_task_name,
         'parameters': fake_params
     }
     mock_task = MagicMock()
@@ -101,7 +101,7 @@ def test_process_invokes_function(mock_loop, mock_resource, mock_get_task):
     Q.process(fake_message)
 
     # Assert
-    mock_get_task.assert_called_once_with(fask_task_name)
+    mock_get_task.assert_called_once_with(fake_task_name)
     mock_task.assert_called_once_with(Q, *fake_params)
 
 
@@ -115,11 +115,11 @@ def test_process_function_logs_error(mock_loop, mock_resource, mock_log, mock_ge
     # Arrange
     Q = QueueProcessor(run=False)
 
-    fask_task_name = fake.pystr()
+    fake_task_name = fake.pystr()
     fake_params = fake.pylist()
 
     fake_message = {
-        'task': fask_task_name,
+        'task': fake_task_name,
         'parameters': fake_params
     }
     mock_task = MagicMock()
@@ -132,7 +132,7 @@ def test_process_function_logs_error(mock_loop, mock_resource, mock_log, mock_ge
     Q.process(fake_message)
 
     # Assert
-    mock_get_task.assert_called_once_with(fask_task_name)
+    mock_get_task.assert_called_once_with(fake_task_name)
     mock_log.exception.assert_called()
     mock_task.assert_called_once_with(Q, *fake_params)
 

@@ -15,7 +15,7 @@ class QueueProcessor:
 
     Example usage::
 
-        from queue_processor import Q
+        from eurystheus import Q
 
         class ExampleQueue(Q):
 
