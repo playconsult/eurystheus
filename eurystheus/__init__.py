@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Distributed Task Queue"""
+"""Eurystheus Distributed Task Queue"""
 # :copyright: (c) 2016 Play Consulting Ltd..  All rights reserved.
 #                 All rights reserved.
 # :license:   MIT, see LICENSE for more details.
