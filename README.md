@@ -6,3 +6,5 @@ Update version in setup.py
 
 Execute the following
 > make
+
+See also: https://github.com/playconsult/sthenelus
